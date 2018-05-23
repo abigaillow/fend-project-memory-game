@@ -25,7 +25,9 @@ function shuffle(array) {
     return array;
 }
 
-
+for (let i = 0; i < cardsArray.length; i++){
+	cards[i].addEventListener("click", displayCard);
+}
 /*
  * set up the event listener for a card. If a card is clicked:
  *  - display the card's symbol (put this functionality in another function that you call from this one)
