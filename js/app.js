@@ -1,7 +1,25 @@
 /*
  * Create a list that holds all of your cards
  */
-let cardsArray = ['fa-anchor', 'fa-anchor', 'fa-bicycle', 'fa-bolt', 'fa-cube', 'fa-diamond', 'fa-diamond', 'fa-plane', 'fa-leaf', 'fa-bomb', 'fa-leaf', 'fa-bomb', 'fa-bolt', 'fa-bicycle', 'fa-plane', 'fa-cube'];
+const cardsArray = ['fa-anchor', 'fa-anchor', 'fa-bicycle', 'fa-bolt', 'fa-cube', 'fa-diamond', 'fa-diamond', 'fa-plane', 'fa-leaf', 'fa-bomb', 'fa-leaf', 'fa-bomb', 'fa-bolt', 'fa-bicycle', 'fa-plane', 'fa-cube'];
+
+const cardsContainer =document.querySelector('.deck');
+//create the cards
+
+for (let i=0; i< cardsArray.length; i++){
+
+	const card = document.createElement('div');
+	card.classlist.add('card');
+	card.innerHTML ="<i class ='" +cardsArray+"'</i>";
+}
+
+
+
+
+
+
+
+
 
 /*
  * Display the cards on the page
