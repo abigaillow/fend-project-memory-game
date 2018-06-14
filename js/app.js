@@ -1,58 +1,156 @@
-/*
- * Create a list that holds all of your cards
- */
-const cardsArray = ['fa-anchor', 'fa-anchor', 'fa-bicycle', 'fa-bolt', 'fa-cube', 'fa-diamond', 'fa-diamond', 'fa-plane', 'fa-leaf', 'fa-bomb', 'fa-leaf', 'fa-bomb', 'fa-bolt', 'fa-bicycle', 'fa-plane', 'fa-cube'];
+const icons = [
+  'fa fa-anchor',
+  'fa fa-anchor',
+  'fa fa-bicycle',
+  'fa fa-bicycle',
+  'fa fa-bolt',
+  'fa fa-bolt',
+  'fa fa-bomb',
+  'fa fa-bomb',
+  'fa fa-cube',
+  'fa fa-cube',
+  'fa fa-diamond',
+  'fa fa-diamond',
+  'fa fa-leaf',
+  'fa fa-leaf',
+  'fa fa-paper-plane-o',
+  'fa fa-paper-plane-o',
+];
 
-const cardsContainer =document.querySelector('.deck');
-//create the cards
+const cardsContainer = document.querySelector('.deck');
+let openedCards = [];
+let matchedCards = [];
 
-for (let i=0; i< cardsArray.length; i++){
-
-	const card = document.createElement('div');
-	card.classlist.add('card');
-	card.innerHTML ="<i class ='" +cardsArray+"'</i>";
+function initializeGame() {
+  let shuffleCards = shuffle(icons);
+  for (let i = 0; i < icons.length; i++) {
+    const card = document.createElement('li');
+    card.classList.add('card');
+    card.innerHTML = `<i class="${shuffleCards[i]}"></i>`;
+    cardsContainer.appendChild(card);
+    addEventListenerClick(card);
+  }
 }
 
+let isFirstCardHidden = true;
 
-
-
-
-
-
-
-
-/*
- * Display the cards on the page
- *   - shuffle the list of cards using the provided "shuffle" method below
- *   - loop through each card and create its HTML
- *   - add each card's HTML to the page
- */
-
-// Shuffle function from http://stackoverflow.com/a/2450976
-function shuffle(array) {
-    var currentIndex = array.length, temporaryValue, randomIndex;
-
-    while (currentIndex !== 0) {
-        randomIndex = Math.floor(Math.random() * currentIndex);
-        currentIndex -= 1;
-        temporaryValue = array[currentIndex];
-        array[currentIndex] = array[randomIndex];
-        array[randomIndex] = temporaryValue;
+function addEventListenerClick(card) {
+  card.addEventListener('click', function() {
+    if (isFirstCardHidden) {
+      startTimer();
+      isFirstCardHidden = false;
     }
 
-    return array;
+    const currentCard = this;
+    const previousCard = openedCards[0];
+
+    if (openedCards.length === 1) {
+      card.classList.add('open', 'show', 'disable');
+      openedCards.push(this);
+      compareCards(currentCard, previousCard);
+    } else {
+      currentCard.classList.add('open', 'show', 'disable');
+      openedCards.push(this);
+    }
+  });
 }
 
-for (let i = 0; i < cardsArray.length; i++){
-	cards[i].addEventListener("click", displayCard);
+function compareCards(currentCard, previousCard) {
+  if (currentCard.innerHTML === previousCard.innerHTML) {
+    currentCard.classList.add('match');
+    previousCard.classList.add('match');
+    matchedCards.push(currentCard, previousCard);
+    openedCards = [];
+    isGameOver();
+  } else {
+    setTimeout(function() {
+      currentCard.classList.remove('open', 'show', 'disable');
+      previousCard.classList.remove('open', 'show', 'disable');
+    }, 500);
+    openedCards = [];
+  }
+  addMoveCount();
 }
-/*
- * set up the event listener for a card. If a card is clicked:
- *  - display the card's symbol (put this functionality in another function that you call from this one)
- *  - add the card to a *list* of "open" cards (put this functionality in another function that you call from this one)
- *  - if the list already has another card, check to see if the two cards match
- *    + if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
- *    + if the cards do not match, remove the cards from the list and hide the card's symbol (put this functionality in another function that you call from this one)
- *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
- *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
- */
+
+function isGameOver() {
+  if (matchedCards.length === icons.length) {
+    stopTimer();
+    alert('GAME OVER!');
+  }
+}
+
+const movesContainer = document.querySelector('.moves');
+let moves = 0;
+movesContainer.innerHTML = 0;
+
+function addMoveCount() {
+  moves++;
+  movesContainer.innerHTML = moves;
+  setRating();
+}
+
+const starsContainer = document.querySelector('.stars');
+const star = `<li><i class="fa fa-star"></i></li>`;
+starsContainer.innerHTML = star + star + star;
+
+function setRating() {
+  if (moves < 10) {
+    starsContainer.innerHTML = star + star + star;
+  } else if (moves < 15) {
+    starsContainer.innerHTML = star + star;
+  } else {
+    starsContainer.innerHTML = star;
+  }
+}
+
+const timerContainer = document.querySelector('.timer');
+let liveTimer,
+  totalSeconds = 0;
+
+timerContainer.innerHTML = totalSeconds + ' Seconds';
+
+function startTimer() {
+  liveTimer = setInterval(function() {
+    totalSeconds++;
+    timerContainer.innerHTML = totalSeconds + ' Seconds';
+  }, 1000);
+}
+
+function stopTimer() {
+  clearInterval(liveTimer);
+}
+
+const restartButton = document.querySelector('.restart');
+restartButton.addEventListener('click', function() {
+  cardsContainer.innerHTML = ''; // Delete all cards.
+  initializeGame();
+  resetGameValues();
+});
+
+function resetGameValues() {
+  isFirstCardHidden = true;
+  matchedCards = [];
+  moves = 0;
+  movesContainer.innerHTML = moves;
+  starsContainer.innerHTML = star + star + star;
+  stopTimer();
+  timerContainer.innerHTML = totalSeconds + ' Seconds';
+  totalSeconds = 0;
+}
+
+// https://stackoverflow.com/a/2450976
+function shuffle(array) {
+  var currentIndex = array.length,
+    temporaryValue,
+    randomIndex;
+  while (currentIndex !== 0) {
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
+  return array;
+}
+
+initializeGame();
