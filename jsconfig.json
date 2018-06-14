@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es2016",
+    "jsx": "preserve"
+  },
+  "exclude": ["node_modules", "**/node_modules/*"],
+  // Defines space handling after a comma delimiter
+  "javascript.format.insertSpaceAfterCommaDelimiter": true,
+  // Defines space handling after a semicolon in a for statement
+  "javascript.format.insertSpaceAfterSemicolonInForStatements": true,
+  // Defines space handling after a binary operator
+  "javascript.format.insertSpaceBeforeAndAfterBinaryOperators": true,
+  // Defines space handling after keywords in control flow statement
+  "javascript.format.insertSpaceAfterKeywordsInControlFlowStatements": true,
+  // Defines space handling after function keyword for anonymous functions
+  "javascript.format.insertSpaceAfterFunctionKeywordForAnonymousFunctions": true,
+  // Defines space handling after opening and before closing non-empty parenthesis
+  "javascript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyParenthesis": true,
+  // Defines space handling after opening and before closing non-empty brackets
+  "javascript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBrackets": true,
+  // Defines whether an open brace is put onto a new line for functions or not
+  "javascript.format.placeOpenBraceOnNewLineForFunctions": true,
+  // Defines whether an open brace is put onto a new line for control blocks or not
+  "javascript.format.placeOpenBraceOnNewLineForControlBlocks": true
+}
